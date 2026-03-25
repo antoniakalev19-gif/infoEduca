@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Minhas Atividades</h2>
+    <div class="row">
+        {% for atividade in atividades %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0 transition-hover">
+                    <div class="card-header {% if atividade.tipo == 'quiz' %}bg-primary{% else %}bg-success{% endif %} text-white text-center py-1">
+                        <small class="text-uppercase fw-bold">{{ atividade.tipo }}</small>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-light text-dark border">{{ atividade.disciplina.nome }}</span>
+                            
+                            {% if atividade.nota_aluno is not None %}
+                                <span class="badge bg-success shadow-sm">
+                                    <i class="bi bi-check-circle-fill"></i> Concluído ({{ atividade.nota_aluno }})
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="card-title fw-bold">{{ atividade.titulo }}</h5>
+                        <p class="card-text text-muted small">{{ atividade.descricao|truncatechars:80 }}</p>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <a href="{% url 'atividades:detalhe_atividade' atividade.id %}" 
+                           class="btn {% if atividade.nota_aluno is not None %}btn-outline-secondary{% elif atividade.tipo == 'quiz' %}btn-primary{% else %}btn-success{% endif %} w-100 fw-bold">
+                            {% if atividade.nota_aluno is not None %}
+                                <i class="bi bi-arrow-repeat"></i> Refazer Atividade
+                            {% else %}
+                                <i class="bi bi-play-fill"></i> Iniciar
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Nenhuma atividade cadastrada ainda.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

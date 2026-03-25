@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'disciplinas:lista_disciplinas' %}">Disciplinas</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'disciplinas:detalhe_disciplina' atividade.disciplina.id %}">{{ atividade.disciplina.nome }}</a></li>
+            <li class="breadcrumb-item active">{{ atividade.titulo }}</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h2 class="card-title mb-3">📚 {{ atividade.titulo }}</h2>
+            <div class="text-muted mb-4 lead">
+                {{ atividade.descricao|linebreaks }}
+            </div>
+
+            <hr>
+
+            <div class="row mt-4">
+                {% if atividade.link_video %}
+                <div class="col-12 mb-4">
+                    <h5 class="mb-3 text-danger"><i class="bi bi-play-circle-fill"></i> Vídeo Aula</h5>
+                    <div class="ratio ratio-16x9 shadow-sm rounded overflow-hidden">
+                        <iframe src="{{ atividade.link_video }}" allowfullscreen></iframe>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if atividade.arquivo %}
+                <div class="col-12">
+                    <div class="alert alert-secondary d-flex justify-content-between align-items-center p-3">
+                        <div>
+                            <h5 class="mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger"></i> Material de Apoio</h5>
+                            <small>Clique para abrir ou baixar o arquivo PDF.</small>
+                        </div>
+                        <a href="{{ atividade.arquivo.url }}" class="btn btn-primary px-4" target="_blank">
+                            <i class="bi bi-download"></i> Visualizar PDF
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-footer bg-light text-center py-3">
+            <a href="{% url 'disciplinas:detalhe_disciplina' atividade.disciplina.id %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Voltar para a Disciplina
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

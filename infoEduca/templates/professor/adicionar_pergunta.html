@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-5">
+            <h4>Quiz: {{ atividade.titulo }}</h4>
+            <p class="text-muted small">Total de questões: {{ perguntas.count }}</p>
+            <hr>
+            {% for p in perguntas %}
+            <div class="card mb-2 bg-light shadow-sm">
+                <div class="card-body p-2">
+                    <strong>{{ forloop.counter }}. {{ p.texto }}</strong><br>
+                    <small class="text-success">Correta: {{ p.resposta_correta|upper }}</small>
+                </div>
+            </div>
+            {% endfor %}
+            <a href="{% url 'professor:dashboard' %}" class="btn btn-dark w-100 mt-3">Finalizar Quiz</a>
+        </div>
+
+        <div class="col-md-7">
+            <div class="card shadow border-primary">
+                <div class="card-header bg-primary text-white">Nova Questão</div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Enunciado da Pergunta</label>
+                            <textarea name="texto" class="form-control" rows="2" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="small">Opção A</label>
+                                <input type="text" name="opcao_a" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="small">Opção B</label>
+                                <input type="text" name="opcao_b" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="small">Opção C</label>
+                                <input type="text" name="opcao_c" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="small">Opção D</label>
+                                <input type="text" name="opcao_d" class="form-control form-control-sm" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 mt-2">
+                            <label class="form-label fw-bold">Qual é a alternativa correta?</label>
+                            <select name="correta" class="form-select border-success">
+                                <option value="a">Opção A</option>
+                                <option value="b">Opção B</option>
+                                <option value="c">Opção C</option>
+                                <option value="d">Opção D</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">+ Salvar e Adicionar Outra</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

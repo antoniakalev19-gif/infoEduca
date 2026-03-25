@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4"><i class="bi bi-chat-dots"></i> Mural da Comunidade</h2>
+            
+            {% for topico in topicos %}
+            <div class="card mb-3 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ topico.titulo }}</h5>
+                    <p class="card-text text-secondary">{{ topico.mensagem|linebreaks }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="badge bg-light text-dark fw-normal">
+                            <i class="bi bi-person"></i> {{ topico.autor.username }}
+                        </span>
+                        <small class="text-muted">{{ topico.data_criacao|date:"d/m/Y H:i" }}</small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info">Ainda não há tópicos. Comece uma conversa!</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Dúvida ou Sugestão?</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Título curto</label>
+                            <input type="text" name="titulo" class="form-control" placeholder="Ex: Dúvida sobre Crase" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Sua mensagem</label>
+                            <textarea name="mensagem" class="form-control" rows="4" placeholder="Descreva o que você está pensando..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Publicar no Mural</button>
+                    </form>
+                    {% else %}
+                    <div class="text-center">
+                        <p>Você precisa estar logado para participar.</p>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Entrar agora</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

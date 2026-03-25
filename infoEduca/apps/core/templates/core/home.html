@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm border border-primary">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold text-primary">Bem-vindo ao InfoEduca</h1>
+        <p class="col-md-8 fs-5">Sua plataforma de estudos interativa. Escolha uma disciplina abaixo ou veja as últimas atividades publicadas.</p>
+        <a href="{% url 'disciplinas:lista_disciplinas' %}" class="btn btn-primary btn-lg">Explorar Matérias</a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-7">
+        <h3 class="mb-4"><i class="bi bi-book"></i> Disciplinas em Destaque</h3>
+        <div class="row">
+            {% for disciplina in disciplinas %}
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 shadow-sm border-info">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ disciplina.nome }}</h5>
+                        <p class="card-text small text-muted">{{ disciplina.descricao|truncatechars:60 }}</p>
+                        <a href="{% url 'disciplinas:detalhe_disciplina' disciplina.id %}" class="btn btn-sm btn-outline-info">Acessar</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">Nenhuma disciplina cadastrada ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <h3 class="mb-4"><i class="bi bi-star-fill text-warning"></i> Novidades</h3>
+        <div class="list-group shadow-sm">
+            {% for atividade in atividades_recentes %}
+            <a href="{% url 'atividades:detalhe_atividade' atividade.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-0">{{ atividade.titulo }}</h6>
+                    <small class="text-muted">{{ atividade.disciplina.nome }}</small>
+                </div>
+                <span class="badge bg-secondary rounded-pill">{{ atividade.get_tipo_display }}</span>
+            </a>
+            {% empty %}
+            <p class="p-3 text-muted border rounded bg-light">Aguardando novas atividades.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

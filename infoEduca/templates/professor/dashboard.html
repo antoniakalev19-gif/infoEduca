@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex gap-2 mb-4">
+        <a href="{% url 'professor:criar_material' %}" class="btn btn-success shadow-sm">
+            <i class="bi bi-file-earmark-plus"></i> + Novo Material
+        </a>
+        <a href="{% url 'professor:criar_quiz' %}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-patch-plus"></i> + Novo Quiz
+        </a>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="display-6"><i class="bi bi-person-badge"></i> Painel de Controle do Professor</h2>
+                <p class="text-muted">Acompanhe o desempenho de todos os usuários da plataforma.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white shadow-sm mb-4">
+                    <div class="card-body text-center">
+                        <h6 class="text-uppercase small">Atividades Realizadas</h6>
+                        <h2 class="display-4 fw-bold">{{ total_concluidas }}</h2>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light fw-bold">Filtrar por Disciplina</div>
+                    <div class="list-group list-group-flush">
+                        {% for disc in disciplinas %}
+                        <a href="{% url 'professor:relatorio_disciplina' disc.id %}" class="list-group-item list-group-item-action">
+                            {{ disc.nome }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- 🔹 Nova seção para listar quizzes -->
+                <div class="card shadow-sm mt-4">
+                    <div class="card-header bg-white fw-bold">Quizzes Criados</div>
+                    <div class="list-group list-group-flush">
+                        {% for quiz in quizzes %}
+                            <a href="{% url 'professor:adicionar_pergunta' quiz.id %}" class="list-group-item list-group-item-action">
+                                {{ quiz.titulo }} <small class="text-muted">({{ quiz.disciplina.nome }})</small>
+                            </a>
+                        {% empty %}
+                            <p class="text-muted p-3">Nenhum quiz criado ainda.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white fw-bold">Histórico Geral de Notas</div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Estudante</th>
+                                    <th>Atividade</th>
+                                    <th>Data</th>
+                                    <th>Nota</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registro in desempenho %}
+                                <tr>
+                                    <td><strong>{{ registro.aluno.username }}</strong></td>
+                                    <td>{{ registro.atividade.titulo }}</td>
+                                    <td>{{ registro.data_conclusao|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        <span class="badge {% if registro.nota >= 7 %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ registro.nota }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">Nenhuma atividade registrada ainda.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

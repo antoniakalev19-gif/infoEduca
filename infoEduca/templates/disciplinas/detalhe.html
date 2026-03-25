@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'disciplinas:lista_disciplinas' %}">Minhas Disciplinas</a></li>
+            <li class="breadcrumb-item active">{{ disciplina.nome }}</li>
+        </ol>
+    </nav>
+
+    <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary mb-4 shadow-sm">
+        <h1 class="display-4 font-weight-bold">{{ disciplina.nome }}</h1>
+        <p class="lead my-3">{{ disciplina.descricao }}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="mb-3"><i class="fas fa-book-open"></i> Materiais de Estudo</h4>
+            <div class="list-group mb-4">
+                {% for item in materiais %}
+                <a href="{% url 'atividades:detalhe_atividade' item.id %}" class="list-group-item list-group-item-action border-left-info">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ item.titulo }}</h6>
+                        <small class="badge badge-pill badge-info">PDF / Vídeo</small>
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-muted small">Nenhum material de apoio cadastrado.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h4 class="mb-3"><i class="fas fa-tasks"></i> Quizzes e Prática</h4>
+            <div class="list-group mb-4">
+                {% for quiz in quizzes %}
+                <a href="{% url 'atividades:detalhe_atividade' quiz.id %}" class="list-group-item list-group-item-action border-left-success">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ quiz.titulo }}</h6>
+                        <small class="badge badge-pill badge-success">Quiz</small>
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-muted small">Nenhum quiz disponível no momento.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if not tem_conteudo %}
+    <div class="alert alert-warning text-center">
+        Esta disciplina ainda está sendo atualizada. Volte em breve!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

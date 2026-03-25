@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2><i class="bi bi-chat-dots"></i> Chat de Suporte</h2>
+    <div class="card shadow-sm mb-3" style="max-height: 400px; overflow-y: auto;">
+        <div class="card-body">
+            {% for msg in mensagens %}
+                <p>
+                    <strong>{{ msg.nome }} ({{ msg.email }}):</strong>
+                    {{ msg.mensagem }}
+                    <br><small class="text-muted">{{ msg.data_envio|date:"d/m/Y H:i" }}</small>
+                </p>
+            {% empty %}
+                <p class="text-muted">Nenhuma mensagem ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <form method="post" class="d-flex">
+        {% csrf_token %}
+        <input type="text" name="nome" class="form-control me-2" placeholder="Seu nome" required>
+        <input type="email" name="email" class="form-control me-2" placeholder="Seu email" required>
+        <input type="text" name="mensagem" class="form-control me-2" placeholder="Digite sua mensagem..." required>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
+{% endblock %}

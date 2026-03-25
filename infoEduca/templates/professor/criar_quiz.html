@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Criar Novo Quiz</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Título do Quiz</label>
+                            <input type="text" name="titulo" class="form-control" placeholder="Ex: Simulado de Matemática - 1º Bimestre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Disciplina / Turma</label>
+                            <select name="disciplina" class="form-select" required>
+                                {% for d in disciplinas %}
+                                    <option value="{{ d.id }}">{{ d.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Próximo: Adicionar Perguntas</button>
+                            <a href="{% url 'professor:dashboard' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="alert alert-info mt-3 small">
+                <i class="bi bi-info-circle"></i> Após salvar, você será redirecionado para a tela de elaboração das questões.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

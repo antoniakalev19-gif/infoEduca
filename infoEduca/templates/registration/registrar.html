@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Conta - InfoEduca{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 mt-5">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-plus-fill text-primary" style="font-size: 3rem;"></i>
+                    <h2 class="fw-bold h4 mt-3" style="color: var(--cor-primaria);">Comece a Estudar</h2>
+                    <p class="text-muted small">Crie sua conta para salvar seu progresso nos quizes.</p>
+                </div>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">
+                                {{ field.help_text|safe }}
+                            </div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="text-danger small fw-bold mt-1">
+                                <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            Finalizar meu Cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-center py-3 border-0">
+                <span class="text-muted small">Já tem uma conta?</span>
+                <a href="{% url 'login' %}" class="text-decoration-none fw-bold small ms-1">Fazer Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilizando os inputs para combinarem com o tema Clean */
+    input[type="text"], input[type="password"], input[type="email"] {
+        display: block;
+        width: 100%;
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        border: 1px solid var(--cor-borda);
+        border-radius: 8px;
+        background-color: #fcfdfe;
+        transition: all 0.2s;
+    }
+
+    input:focus {
+        border-color: var(--cor-destaque);
+        outline: 0;
+        box-shadow: 0 0 0 4px rgba(0, 97, 255, 0.1);
+        background-color: #fff;
+    }
+
+    /* Ajuste para as listas de requisitos de senha do Django */
+    .form-text ul {
+        padding-left: 1.2rem;
+        margin-top: 0.5rem;
+        list-style-type: none;
+    }
+    .form-text li {
+        position: relative;
+        margin-bottom: 2px;
+    }
+    .form-text li::before {
+        content: "•";
+        color: var(--cor-destaque);
+        font-weight: bold;
+        display: inline-block; 
+        width: 1em;
+        margin-left: -1em;
+    }
+</style>
+{% endblock %}

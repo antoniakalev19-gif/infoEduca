@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure--vwgbt1@#0o1urv+jbbp*4#f62hm#q)9z$$5xi3m0@4jrc3=l4
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['infoeduca.onrender.com']
 
 
 # Application definition
